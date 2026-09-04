@@ -56,25 +56,25 @@ export default function TopicList() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-sm font-medium text-slate-500">Loading Question Tracker data...</p>
+        <div className="w-12 h-12 border-4 border-[rgb(245,124,6)] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-sm font-bold text-slate-500 dark:text-zinc-400">Loading DSA Sheet...</p>
       </div>
     )
   }
 
   if (visibleTopics.length === 0) {
     return (
-      <div className="text-center py-16 bg-white rounded-xl border border-slate-200 p-8 shadow-xs">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+      <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-2xl border border-[rgb(255,237,213)] dark:border-zinc-800 p-8 card-3d">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[rgb(255,237,213)] dark:bg-zinc-800 flex items-center justify-center text-[rgb(245,124,6)]">
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h3 className="text-base font-semibold text-slate-800">No topics or questions found</h3>
-        <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+        <h3 className="text-base font-bold text-slate-800 dark:text-zinc-100">No matching topics or questions found</h3>
+        <p className="text-xs text-slate-500 dark:text-zinc-400 mt-1 max-w-sm mx-auto">
           {searchTerm || difficultyFilter !== 'All'
-            ? 'Try changing your search terms or clearing the difficulty filter.'
-            : 'Get started by adding your first DSA topic above!'}
+            ? 'Try adjusting your search keywords or clearing the difficulty filter.'
+            : 'Get started by creating your first DSA topic above!'}
         </p>
       </div>
     )

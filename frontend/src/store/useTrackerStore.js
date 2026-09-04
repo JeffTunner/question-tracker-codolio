@@ -57,6 +57,7 @@ const parseFallbackData = () => {
                 difficulty: difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase(),
                 link,
                 resource: q.resource || '',
+                notes: q.notes || '',
                 solved: !!q.isSolved,
                 topicId,
                 subTopicId,
@@ -201,6 +202,7 @@ export const useTrackerStore = create((set, get) => ({
                     topicId,
                     subTopicId,
                     position,
+                    notes: '',
                     solved: false
                 }]
             }))
