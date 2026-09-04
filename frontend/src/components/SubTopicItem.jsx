@@ -1,5 +1,5 @@
 // src/components/SubTopicItem.jsx
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useTrackerStore } from '../store/useTrackerStore'
 import QuestionList from './QuestionList'
 import { useSortable } from '@dnd-kit/sortable'
@@ -15,10 +15,12 @@ export default function SubTopicItem({ subTopic }) {
   const deleteSubTopic = useTrackerStore(state => state.deleteSubTopic)
   const addQuestion = useTrackerStore(state => state.addQuestion)
 
-  const questions = useTrackerStore(state =>
-    state.questions
+  const allQuestions = useTrackerStore(state => state.questions)
+  const questions = useMemo(() =>
+    allQuestions
       .filter(q => q.subTopicId === subTopic.id)
-      .sort((a, b) => (a.position || 0) - (b.position || 0))
+      .sort((a, b) => (a.position || 0) - (b.position || 0)),
+    [allQuestions, subTopic.id]
   )
 
   const solvedCount = questions.filter(q => q.solved).length

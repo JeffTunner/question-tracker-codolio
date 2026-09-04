@@ -1,5 +1,5 @@
 // src/components/TopicItem.jsx
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useTrackerStore } from '../store/useTrackerStore'
 import SubTopicList from './SubTopicList'
 import QuestionList from './QuestionList'
@@ -18,14 +18,20 @@ export default function TopicItem({ topic }) {
   const addSubTopic = useTrackerStore(state => state.addSubTopic)
   const addQuestion = useTrackerStore(state => state.addQuestion)
 
-  const subTopics = useTrackerStore(state =>
-    state.subTopics.filter(st => st.topicId === topic.id).sort((a, b) => (a.position || 0) - (b.position || 0))
+  const allSubTopics = useTrackerStore(state => state.subTopics)
+  const allQuestions = useTrackerStore(state => state.questions)
+
+  const subTopics = useMemo(() =>
+    allSubTopics.filter(st => st.topicId === topic.id).sort((a, b) => (a.position || 0) - (b.position || 0)),
+    [allSubTopics, topic.id]
   )
-  const directQuestions = useTrackerStore(state =>
-    state.questions.filter(q => q.topicId === topic.id && !q.subTopicId).sort((a, b) => (a.position || 0) - (b.position || 0))
+  const directQuestions = useMemo(() =>
+    allQuestions.filter(q => q.topicId === topic.id && !q.subTopicId).sort((a, b) => (a.position || 0) - (b.position || 0)),
+    [allQuestions, topic.id]
   )
-  const allTopicQuestions = useTrackerStore(state =>
-    state.questions.filter(q => q.topicId === topic.id)
+  const allTopicQuestions = useMemo(() =>
+    allQuestions.filter(q => q.topicId === topic.id),
+    [allQuestions, topic.id]
   )
 
   const solvedCount = allTopicQuestions.filter(q => q.solved).length
