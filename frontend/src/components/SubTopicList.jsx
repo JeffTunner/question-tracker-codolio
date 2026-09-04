@@ -7,23 +7,36 @@ import { useTrackerStore } from '../store/useTrackerStore'
 
 export default function SubTopicList({ topicId, subTopics }) {
   const reorderSubTopics = useTrackerStore(state => state.reorderSubTopics)
+  const allSubTopics = useTrackerStore(state => state.subTopics)
 
   const handleDragEnd = (event) => {
     const { active, over } = event
-    if (active.id !== over?.id) {
+    if (active && over && active.id !== over.id) {
       const oldIndex = subTopics.findIndex(st => st.id === active.id)
       const newIndex = subTopics.findIndex(st => st.id === over.id)
-      const newOrdered = arrayMove(subTopics, oldIndex, newIndex)
-      reorderSubTopics(newOrdered)
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newSubset = arrayMove(subTopics, oldIndex, newIndex)
+        // Update positions
+        const updatedAll = [...allSubTopics]
+        newSubset.forEach((item, pos) => {
+          const idx = updatedAll.findIndex(st => st.id === item.id)
+          if (idx !== -1) {
+            updatedAll[idx] = { ...updatedAll[idx], position: pos }
+          }
+        })
+        reorderSubTopics(updatedAll)
+      }
     }
   }
+
+  if (!subTopics || subTopics.length === 0) return null
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={subTopics.map(st => st.id)} strategy={verticalListSortingStrategy}>
         <div className="space-y-2">
           {subTopics
-            .sort((a, b) => a.position - b.position)
+            .sort((a, b) => (a.position || 0) - (b.position || 0))
             .map(sub => (
               <SubTopicItem key={sub.id} subTopic={sub} />
             ))}
