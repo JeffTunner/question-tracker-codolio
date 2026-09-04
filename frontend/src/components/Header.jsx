@@ -25,9 +25,11 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/30">
-              C
-            </div>
+            <img
+              src="/codolio_logo.svg"
+              alt="Codolio Logo"
+              className="w-10 h-10 object-contain rounded-xl shadow-md bg-slate-800/80 p-1 border border-slate-700/60"
+            />
             <div>
               <div className="flex items-center space-x-2">
                 <h1 className="text-xl sm:text-2xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">

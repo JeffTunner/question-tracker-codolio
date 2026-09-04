@@ -240,30 +240,39 @@ export const useTrackerStore = create((set, get) => ({
 
     // ---- REORDER (drag-and-drop) ----
     reorderTopics: async (newOrderedTopics) => {
-        const withPositions = newOrderedTopics.map((t, i) => ({ ...t, position: i }))
-        set({ topics: withPositions })
+        set(state => {
+            const map = new Map(newOrderedTopics.map(t => [t.id, t]))
+            const merged = state.topics.map(t => map.has(t.id) ? { ...t, ...map.get(t.id) } : t)
+            return { topics: merged }
+        })
         try {
-            await api.put('/topics/reorder', withPositions)
+            await api.put('/topics/reorder', newOrderedTopics)
         } catch (e) {
             console.warn('Offline reorder topics')
         }
     },
 
     reorderSubTopics: async (newOrderedSubTopics) => {
-        const withPositions = newOrderedSubTopics.map((st, i) => ({ ...st, position: i }))
-        set({ subTopics: withPositions })
+        set(state => {
+            const map = new Map(newOrderedSubTopics.map(st => [st.id, st]))
+            const merged = state.subTopics.map(st => map.has(st.id) ? { ...st, ...map.get(st.id) } : st)
+            return { subTopics: merged }
+        })
         try {
-            await api.put('/subtopics/reorder', withPositions)
+            await api.put('/subtopics/reorder', newOrderedSubTopics)
         } catch (e) {
             console.warn('Offline reorder subtopics')
         }
     },
 
     reorderQuestions: async (newOrderedQuestions) => {
-        const withPositions = newOrderedQuestions.map((q, i) => ({ ...q, position: i }))
-        set({ questions: withPositions })
+        set(state => {
+            const map = new Map(newOrderedQuestions.map(q => [q.id, q]))
+            const merged = state.questions.map(q => map.has(q.id) ? { ...q, ...map.get(q.id) } : q)
+            return { questions: merged }
+        })
         try {
-            await api.put('/questions/reorder', withPositions)
+            await api.put('/questions/reorder', newOrderedQuestions)
         } catch (e) {
             console.warn('Offline reorder questions')
         }

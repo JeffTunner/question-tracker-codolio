@@ -15,16 +15,11 @@ export default function SubTopicList({ topicId, subTopics }) {
       const oldIndex = subTopics.findIndex(st => st.id === active.id)
       const newIndex = subTopics.findIndex(st => st.id === over.id)
       if (oldIndex !== -1 && newIndex !== -1) {
-        const newSubset = arrayMove(subTopics, oldIndex, newIndex)
-        // Update positions
-        const updatedAll = [...allSubTopics]
-        newSubset.forEach((item, pos) => {
-          const idx = updatedAll.findIndex(st => st.id === item.id)
-          if (idx !== -1) {
-            updatedAll[idx] = { ...updatedAll[idx], position: pos }
-          }
-        })
-        reorderSubTopics(updatedAll)
+        const reordered = arrayMove(subTopics, oldIndex, newIndex).map((st, idx) => ({
+          ...st,
+          position: idx
+        }))
+        reorderSubTopics(reordered)
       }
     }
   }

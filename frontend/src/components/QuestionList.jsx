@@ -7,7 +7,6 @@ import { useTrackerStore } from '../store/useTrackerStore'
 
 export default function QuestionList({ questions, parentId, parentType }) {
   const reorderQuestions = useTrackerStore(state => state.reorderQuestions)
-  const allQuestions = useTrackerStore(state => state.questions)
   const searchTerm = useTrackerStore(state => state.searchTerm)
   const difficultyFilter = useTrackerStore(state => state.difficultyFilter)
 
@@ -17,16 +16,11 @@ export default function QuestionList({ questions, parentId, parentType }) {
       const oldIndex = questions.findIndex(q => q.id === active.id)
       const newIndex = questions.findIndex(q => q.id === over.id)
       if (oldIndex !== -1 && newIndex !== -1) {
-        const newSubset = arrayMove(questions, oldIndex, newIndex)
-        // Update positions in global state
-        const updatedAll = [...allQuestions]
-        newSubset.forEach((item, pos) => {
-          const idx = updatedAll.findIndex(q => q.id === item.id)
-          if (idx !== -1) {
-            updatedAll[idx] = { ...updatedAll[idx], position: pos }
-          }
-        })
-        reorderQuestions(updatedAll)
+        const reordered = arrayMove(questions, oldIndex, newIndex).map((q, idx) => ({
+          ...q,
+          position: idx
+        }))
+        reorderQuestions(reordered)
       }
     }
   }

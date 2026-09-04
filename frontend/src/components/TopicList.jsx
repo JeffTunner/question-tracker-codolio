@@ -24,7 +24,10 @@ export default function TopicList() {
       const oldIndex = topics.findIndex(t => t.id === active.id)
       const newIndex = topics.findIndex(t => t.id === over.id)
       if (oldIndex !== -1 && newIndex !== -1) {
-        const newOrdered = arrayMove(topics, oldIndex, newIndex)
+        const newOrdered = arrayMove(topics, oldIndex, newIndex).map((t, idx) => ({
+          ...t,
+          position: idx
+        }))
         reorderTopics(newOrdered)
       }
     }
