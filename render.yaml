@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: codolio-backend
+    runtime: java          # modern field (old guides used "env: java")
+    plan: free
+    region: oregon
+    rootDir: backend       # ← this is the important part
+    buildCommand: ./gradlew build -x test
+    startCommand: java -jar build/libs/*.jar   # relative to rootDir
+    autoDeploy: true
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: CORS_ORIGIN
+        value: "*"         # change later to your real Vercel URL
