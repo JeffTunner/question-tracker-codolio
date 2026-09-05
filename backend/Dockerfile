@@ -2,16 +2,19 @@
 FROM eclipse-temurin:21-jdk-jammy AS build
 WORKDIR /app
 
-# Copy Gradle files
+# Copy Gradle wrapper files
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 
-# Download dependencies (better caching)
+# Make gradlew executable (this is the important line)
+RUN chmod +x ./gradlew
+
+# Download dependencies
 RUN ./gradlew dependencies --no-daemon
 
-# Copy source and build
+# Copy source code and build
 COPY src src
 RUN ./gradlew build -x test --no-daemon
 
@@ -19,7 +22,6 @@ RUN ./gradlew build -x test --no-daemon
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-# Copy the built jar
 COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
