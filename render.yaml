@@ -6,7 +6,7 @@ services:
     region: oregon
     rootDir: backend          # important for monorepo
     dockerfilePath: ./Dockerfile
-    healthCheckPath: /actuator/health
+    # healthCheckPath: /actuator/health
     envVars:
       - key: CORS_ORIGIN
         value: "*"            # change later to your Vercel URL
